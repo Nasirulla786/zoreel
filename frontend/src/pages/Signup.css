@@ -1,0 +1,75 @@
+/* Signup.css - responsive, accessible signup card */
+:root{
+  --bg1: #eef2ff;
+  --bg2: #f7fbff;
+  --card-bg: linear-gradient(180deg,#ffffffee,#fbfdff);
+  --accent-start: #0f62fe;
+  --accent-end: #0066cc;
+  --muted: #6b7280;
+}
+html,body,#root{height:100%;}
+body{
+  margin:0;
+  font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial;
+  background: radial-gradient(1000px 400px at 10% 10%, rgba(15,98,254,0.06), transparent),
+              radial-gradient(600px 300px at 90% 90%, rgba(0,102,204,0.04), transparent),
+              linear-gradient(180deg,var(--bg1),var(--bg2));
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.signup-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+.signup-card{
+  width:100%;
+  max-width:420px;
+  background:var(--card-bg);
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(18,38,63,0.12);
+  padding:28px;
+  position:relative;
+  border:1px solid rgba(15,62,115,0.05);
+}
+.brand{
+  text-align:center;
+  margin-bottom:8px;
+}
+.brand h2{margin:0;font-size:22px;color:#0f1724;}
+.tabs{
+  display:flex;
+  gap:10px;
+  margin:18px 0 20px;
+  background:rgba(15,62,115,0.03);
+  padding:6px;
+  border-radius:999px;
+}
+.tab{flex:1;text-align:center;padding:8px 6px;border-radius:999px;color:var(--muted);cursor:pointer;font-weight:600}
+.tab.active{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:white;box-shadow:0 4px 12px rgba(6,52,120,0.18)}
+.form-row{display:flex;flex-direction:column;gap:12px}
+.input{display:flex;flex-direction:column}
+.input label{font-size:13px;color:var(--muted);margin-bottom:6px}
+.input input{padding:12px 14px;border-radius:10px;border:1px solid #e6e9ef;background:white;font-size:14px;outline:none;transition:box-shadow .15s,border-color .15s}
+.input input:focus{box-shadow:0 6px 18px rgba(15,62,115,0.08);border-color:rgba(15,62,115,0.18)}
+.small{font-size:13px;color:var(--muted)}
+.actions{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+.primary-btn{appearance:none;border:0;padding:12px;border-radius:12px;color:white;font-weight:700;background:linear-gradient(90deg,var(--accent-start),var(--accent-end));cursor:pointer;box-shadow:0 8px 18px rgba(15,62,115,0.14)}
+.secondary-link{color:var(--accent-start);text-decoration:none;font-weight:600}
+.row-between{display:flex;justify-content:space-between;align-items:center}
+.muted-center{color:var(--muted);text-align:center;margin-top:8px;font-size:14px}
+.password-toggle{background:transparent;border:0;color:var(--muted);cursor:pointer;font-weight:600}
+.footer-note{margin-top:12px;text-align:center;color:var(--muted);font-size:13px}
+
+@media (max-width:480px){
+  .signup-card{padding:20px;border-radius:14px}
+  .brand h2{font-size:20px}
+}
+
+
+
+.food-part{
+    background-color: rgb(0, 0, 92);
+}
