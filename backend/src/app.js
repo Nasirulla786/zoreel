@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin:"https://zoreel-3.onrender.com",
+    origin:"https://zoreel-5.onrender.com",
     credentials:true
 }))
 // app.use(cors({
