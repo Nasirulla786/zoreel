@@ -6,7 +6,8 @@ import Routing from './services/routing'
 import Pass from '../pro/pass'
 
 
-export  const serverURL = "http://localhost:3000";
+// export  const serverURL = "http://localhost:3000";
+export  const serverURL = "https://zoreel-2.onrender.com";
 
 function App() {
 
