@@ -33,7 +33,12 @@ export const userRegister = async (req, res) => {
       return res.status(500).json({ message: "token cant access" });
     }
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     return res.status(200).json(user);
   } catch (error) {
@@ -80,7 +85,12 @@ export const userLogin= async (req, res) => {
       return res.status(500).json({ message: "token cant access" });
     }
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     return res.status(200).json(alreadyEmail);
   } catch (error) {

@@ -82,19 +82,30 @@ export const getLike = async (req, res) => {
       (id) => id.toString() === req.user._id.toString()
     );
 
-    if (alreadyLike) {
-      reel.like = reel.like.filter((e) => {
-        e._id.toString() != req.user._id.toString();
-      });
-    } else {
-      reel.like.push(req.user._id);
+    // If query param `toggle=true` is present, perform toggle; otherwise just return status
+    if (req.query.toggle === "true") {
+      if (alreadyLike) {
+        // remove the user's id from the likes array
+        reel.like = reel.like.filter(
+          (e) => e.toString() !== req.user._id.toString()
+        );
+      } else {
+        // add the user's id to the likes array
+        reel.like.push(req.user._id);
+      }
+
+      await reel.save();
+
+      // After toggling, `liked` should reflect the new state
+      const liked = !alreadyLike;
+      return res.status(200).json({ liked, likeCount: reel.like.length });
     }
 
-    await reel.save();
-
-    return res.json({ liked: alreadyLike, likeCount: reel.like.length });
+    // Read-only: return current like status and count without modifying
+    return res.status(200).json({ liked: alreadyLike, likeCount: reel.like.length });
   } catch (error) {
     console.log("like error", error);
+    return res.status(500).json({ message: "like error" });
   }
 };
 

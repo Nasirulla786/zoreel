@@ -3,13 +3,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Routing from './services/routing'
+import Pass from '../pro/pass'
 
 
 export  const serverURL = "http://localhost:3000";
 
 function App() {
 
-  
+
 
 
 
@@ -17,6 +18,7 @@ function App() {
   return (
     <>
     <Routing />
+    {/* <Pass /> */}
     </>
 
 

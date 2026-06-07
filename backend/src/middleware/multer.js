@@ -14,9 +14,12 @@ const storage = multer.diskStorage({
 
 })
 
-export const upload  = multer({
-    storage,
-    limits: {
-        fileSize: 100 * 1024 * 1024 // 100MB limit
-    }
-});
+// Allow configuring max upload size via env var (in bytes). If not set, multer will not enforce a fileSize limit here.
+const maxSize = process.env.MAX_UPLOAD_SIZE ? parseInt(process.env.MAX_UPLOAD_SIZE, 10) : null;
+
+const multerOptions = { storage };
+if (maxSize && !isNaN(maxSize) && maxSize > 0) {
+    multerOptions.limits = { fileSize: maxSize };
+}
+
+export const upload = multer(multerOptions);

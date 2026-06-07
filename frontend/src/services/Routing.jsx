@@ -10,6 +10,7 @@ import ProtectedRoute from '../Components/ProtectedRoute'
 import Porfile from '../pages/Porfile'
 import SaveReel from '../pages/SaveReel'
 import FoodPartnerDetails from '../pages/FoodPartnerDetails'
+import FoodPartnerDash from '../pages/FoodPartnerDash'
 
 const Routing = () => {
   return (
@@ -24,6 +25,8 @@ const Routing = () => {
     <Route path = "/profile/:profile" element={ <Porfile />} />
     <Route path = "/savereel" element={ <SaveReel />} />
     <Route path = "/foodpartnerdetail/:foodpartner" element={<FoodPartnerDetails />} />
+
+    <Route  path='/partner-dash' element={<FoodPartnerDash />}/>
 
 
 

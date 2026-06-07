@@ -31,7 +31,12 @@ export const foodPartnerRegister = async (req, res) => {
     });
 
     const token = generateToken(foodpartner._id);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     return res.status(200).json(foodpartner);
   } catch (error) {
@@ -63,7 +68,12 @@ export const foodpartnerLogin = async (req, res) => {
 
 
     const token = generateToken(emailCheck._id);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
     return res.status(200).json(emailCheck);
   } catch (error) {
@@ -111,9 +121,6 @@ export const getFoodPartnerDetails = async(req , res)=>{
   try {
     const foodpartnerId = req.params.foodpartner;
 
-    // Import Food model for the query
-    const Food = require("../model/food.model.js").default;
-
     const foodPartner = await FoodPartner.findById(foodpartnerId);
     if(!foodPartner){
       console.log("food partner not found")
@@ -121,7 +128,7 @@ export const getFoodPartnerDetails = async(req , res)=>{
     }
 
     // Get all food items uploaded by this food partner
-    const foodItems = await Food.find({foodpartner: foodpartnerId});
+    const foodItems = await Food.find({ foodpartner: foodpartnerId }).sort({ createdAt: -1 });
 
     return res.status(200).json({
       ...foodPartner.toObject(),
@@ -134,5 +141,46 @@ export const getFoodPartnerDetails = async(req , res)=>{
   } catch (error) {
     console.log("getfoodpartnerdetails error", error);
     return res.status(500).json({message:"Error fetching food partner details"});
+  }
+}
+
+export const getMyStore = async(req, res) => {
+  try {
+    const foodpartnerId = req.foodpartner._id;
+
+    const foodPartner = await FoodPartner.findById(foodpartnerId);
+    if (!foodPartner) {
+      return res.status(404).json({ message: "Food partner not found" });
+    }
+
+    const foodItems = await Food.find({ foodpartner: foodpartnerId }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      partner: foodPartner,
+      items: foodItems,
+      totalItems: foodItems.length,
+      rating: (Math.random() * 2 + 3).toFixed(1),
+      reviews: Math.floor(Math.random() * 500),
+    });
+  } catch (error) {
+    console.log("getMyStore error", error);
+    return res.status(500).json({ message: "Error fetching your store" });
+  }
+}
+
+export const deleteFoodItem = async (req, res) => {
+  try {
+    const itemId = req.params.itemId;
+    const foodpartnerId = req.foodpartner._id;
+
+    const deletedItem = await Food.findOneAndDelete({ _id: itemId, foodpartner: foodpartnerId });
+    if (!deletedItem) {
+      return res.status(404).json({ message: "Item not found or not owned by this partner" });
+    }
+
+    return res.status(200).json({ message: "Item deleted successfully", itemId });
+  } catch (error) {
+    console.log("deleteFoodItem error", error);
+    return res.status(500).json({ message: "Error deleting item" });
   }
 }

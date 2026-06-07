@@ -103,28 +103,30 @@ const ReelCard = ({ reel, index }) => {
   // console.log(allCommentsStore)
 
   const handleLike = async () => {
-    try {
-      // Update UI in real-time immediately
-      const newLikeStatus = !checkLike;
-      setCheckLike(newLikeStatus);
-      setLikeCount(newLikeStatus ? likeCount + 1 : likeCount - 1);
+    // optimistic update with safe revert
+    const prevLiked = checkLike;
+    const prevCount = likeCount;
+    const newLikeStatus = !prevLiked;
+    setCheckLike(newLikeStatus);
+    setLikeCount(newLikeStatus ? prevCount + 1 : prevCount - 1);
 
-      // Send like/unlike to server
+    try {
+      // call the toggle endpoint explicitly
       const res = await axios.get(
-        `${serverURL}/api/user/getlike/${reel?._id}`,
+        `${serverURL}/api/user/getlike/${reel?._id}?toggle=true`,
         { withCredentials: true }
       );
 
       if (res.data) {
-        // Sync with server response
+        // ensure UI matches server
         setCheckLike(res.data.liked);
         setLikeCount(res.data.likeCount);
       }
     } catch (error) {
       console.log("handleLike error", error);
-      // Revert on error
-      setCheckLike(!checkLike);
-      setLikeCount(checkLike ? likeCount + 1 : likeCount - 1);
+      // revert to previous state on error
+      setCheckLike(prevLiked);
+      setLikeCount(prevCount);
     }
   };
 

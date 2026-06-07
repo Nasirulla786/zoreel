@@ -6,7 +6,7 @@ const authFoodPartner = async(req , res , next)=>{
         const token = await req.cookies.token;
         if(!token){
             console.log("token can't find");
-            return;
+            return res.status(401).json({message:"you are not authenticated!"});
         }
 
         const decode = jwt.verify(token , process.env.JWT_SECRET);
@@ -22,7 +22,7 @@ const authFoodPartner = async(req , res , next)=>{
 
     } catch (error) {
         console.log("authfoodpartner middleware error", error);
-
+        return res.status(401).json({message:"Invalid or expired token"});
     }
 }
 
